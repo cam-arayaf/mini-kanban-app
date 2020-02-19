@@ -1,0 +1,60 @@
+h3 {
+	text-align:center;
+	color: #fff;
+	background-color: gray;
+	margin-top: 0;
+}
+
+@media (max-width: 271px) {
+	h2 {
+		display: none;
+	}
+}
+
+.MuiAppBar-root {
+	align-items: center;
+}
+
+.MuiCard-root {
+	text-align: center;
+	border-bottom-right-radius: 10px 5px;
+	background: #ffff88 !important;
+	margin-bottom: 20px;
+}
+
+.MuiCardActions-root {
+	margin-top: -15px;
+}
+
+.MuiIconButton-sizeSmall {
+	width: 0;
+	background: none !important;
+}
+
+.ideas, .to-do, .in-progress, .done {
+	width: 95%;
+	min-height: 180px;
+	box-shadow: 10px 10px 100px -10px rgba(0, 0, 0, 0.75);
+	border:3px solid #E8E8E8;
+	margin-top: 20px;
+}
+
+.ideas {
+  	background-color: #a8e0e1;
+}
+
+.to-do {
+	background-color: #5a96bb;
+}
+
+.in-progress {
+	background-color: #75448c;
+}
+
+.done {
+	background-color: #c46caa;
+}
+
+.MuiAppBar-colorPrimary {
+	background-color: #3e4377 !important;
+}
