@@ -1,3 +1,13 @@
+body {
+	background-color: #e2eff1;
+}
+
+header {
+	background-color: #3e4377 !important;
+	align-items: center;
+	margin-bottom: 20px;
+}
+
 h3 {
 	text-align:center;
 	color: #fff;
@@ -11,13 +21,32 @@ h3 {
 	}
 }
 
-.MuiAppBar-root {
-	align-items: center;
+.ideas, .to-do, .in-progress, .done {
+	min-height: 180px;
+	padding: 0;
+	box-shadow: 10px 10px 100px -10px rgba(0, 0, 0, 0.75);
+	border:3px solid #E8E8E8;
+	margin-bottom: 20px;
+}
+
+.ideas {
+  	background-color: #d6f8b8;
+}
+
+.to-do {
+	background-color: #acdeaa;
+}
+
+.in-progress {
+	background-color: #8fbbaf;
+}
+
+.done {
+	background-color: #6b7b8e;
 }
 
 .MuiCard-root {
 	text-align: center;
-	border-bottom-right-radius: 10px 5px;
 	background: #ffff88 !important;
 	margin-bottom: 20px;
 }
@@ -29,32 +58,4 @@ h3 {
 .MuiIconButton-sizeSmall {
 	width: 0;
 	background: none !important;
-}
-
-.ideas, .to-do, .in-progress, .done {
-	width: 95%;
-	min-height: 180px;
-	box-shadow: 10px 10px 100px -10px rgba(0, 0, 0, 0.75);
-	border:3px solid #E8E8E8;
-	margin-top: 20px;
-}
-
-.ideas {
-  	background-color: #a8e0e1;
-}
-
-.to-do {
-	background-color: #5a96bb;
-}
-
-.in-progress {
-	background-color: #75448c;
-}
-
-.done {
-	background-color: #c46caa;
-}
-
-.MuiAppBar-colorPrimary {
-	background-color: #3e4377 !important;
 }

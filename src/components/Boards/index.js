@@ -4,51 +4,29 @@ import PropTypes from 'prop-types';
 import Board from './Board';
 
 class Boards extends Component {
-    constructor(props) {
-        super(props);
-        this.state = { boards: [], notes: [] };
-    }
+    state = { boards: [], notes: [] };
 
     componentDidMount() {
         this.getBoards();
         this.getNotes();
     }
 
-    getBoards = () => {
-        const { boards } = this.props;
-        this.setState({ boards });
-    }
+    getBoards = ({ boards } = this.props) => this.setState({ boards });
 
-    getNotes = () => {
-        const { notes } = this.props;
-        this.setState({ notes });
-    }
+    getNotes = ({ notes } = this.props) => this.setState({ notes });
 
-    onBlurTextField = _id => {
-        setTimeout(() => {
-            console.log('onBlurTextField');
-            const notes = [...this.state.notes];
-            const textField = document.querySelector(`#textField${ _id }`);
-            const text = notes.find(note => note._id === _id).text.trim();
-            if (textField.value !== text) {
-                textField.value = text;
-                console.log('onBlurTextField', textField.value);
-            }
-        }, 250);
-    }
-
-    clickIcon = (iconType, _id) => {
-        switch (iconType) {
+    eventHandler = (event, _id) => {
+        switch (event) {
             case 'clickAddIcon':
                 return this.clickAddIcon();
-            case 'clickSaveIcon':
-                return this.clickSaveIcon(_id);
             case 'clickDeleteIcon':
                 return this.clickDeleteIcon(_id);
-            case 'clickSkipNextIcon':
-                return this.clickSkipNextIcon(_id);
+            case 'clickSkipPreviousIcon': case 'clickSkipNextIcon':
+                return this.clickSkipPreviousNextIcon(event, _id);
+            case 'clickSaveIcon':
+                return this.clickSaveIcon(_id);
             default:
-                return this.clickSkipPreviousIcon(_id);
+                return this.onBlurTextField(_id);
         }
     }
 
@@ -68,16 +46,6 @@ class Boards extends Component {
         console.log('clickAddIcon', notes);
     }
 
-    clickSaveIcon = _id => {
-        console.log('clickSaveIcon');
-        const notes = [...this.state.notes];
-        const text = document.querySelector(`#textField${ _id }`).value.trim();
-        if (!text) return;
-        notes.forEach(note => note._id === _id ? note.text = text : null);
-        this.setState({ notes });
-        console.log('clickSaveIcon', notes);
-    }
-
     clickDeleteIcon = _id => {
         console.log('clickDeleteIcon');
         const notes = [...this.state.notes];
@@ -88,34 +56,41 @@ class Boards extends Component {
         console.log('clickDeleteIcon', notes);
     }
 
-    clickSkipNextIcon = _id => {
-        console.log('clickSkipNextIcon');
+    clickSkipPreviousNextIcon = (event, _id) => {
+        console.log(event);
         const notes = [...this.state.notes];
         notes.forEach(
             note => note._id === _id ? (
-                note.type = note.type === 'ideas' ? 'to-do' :
-                note.type === 'to-do' ? 'in-progress' :
-                'done'
-            ) :
-            null
+                note.type =
+                    note.type === 'ideas' ? 'to-do' :
+                    note.type === 'to-do' ? (event === 'clickSkipNextIcon' ? 'in-progress' : 'ideas') :
+                    note.type === 'in-progress' ? (event === 'clickSkipNextIcon' ? 'done' : 'to-do') :
+                    'in-progress'
+            ) : null
         );
         this.setState({ notes });
-        console.log('clickSkipNextIcon', notes);
+        console.log(event, notes);
     }
 
-    clickSkipPreviousIcon = _id => {
-        console.log('clickSkipPreviousIcon');
+    clickSaveIcon = _id => {
+        console.log('clickSaveIcon');
         const notes = [...this.state.notes];
-        notes.forEach(
-            note => note._id === _id ? (
-                note.type = note.type === 'to-do' ? 'ideas' :
-                note.type === 'in-progress' ? 'to-do' :
-                'in-progress'
-            ) :
-            null
-        );
+        const textField = document.querySelector(`#textField${ _id }`).value.trim();
+        if (!textField) return;
+        notes.forEach(note => note._id === _id && note.text !== textField ? note.text = textField : null);
         this.setState({ notes });
-        console.log('clickSkipPreviousIcon', notes);
+        console.log('clickSaveIcon', notes);
+    }
+
+    onBlurTextField = _id => {
+        console.log('onBlurTextField');
+        const notes = [...this.state.notes];
+        const textField = document.querySelector(`#textField${ _id }`);
+        notes.forEach(
+            note => note._id === _id && note.text !== textField.value ? textField.value = note.text
+            : null
+        );
+        console.log('onBlurTextField', textField.value);
     }
 
     render() {
@@ -132,8 +107,7 @@ class Boards extends Component {
                                     class_name={ class_name }
                                     title={ title }
                                     notes={ notes }
-                                    clickIcon={ this.clickIcon }
-                                    onBlurTextField={ this.onBlurTextField }
+                                    eventHandler={ this.eventHandler }
                                 />
                             );
                         })

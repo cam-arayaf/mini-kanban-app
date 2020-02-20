@@ -8,40 +8,40 @@ import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
 import SkipNextIcon from '@material-ui/icons/SkipNext';
 import PropTypes from 'prop-types';
 
-const IconBtn = ({ onClick, icon }) => (
-    <IconButton onClick={ onClick } size="small">
+const IconBtn = ({ onMouseDown, icon }) => (
+    <IconButton onMouseDown={ onMouseDown } size="small">
         { icon }
     </IconButton>
 );
 
-const AddIdea = ({ clickIcon }) => (
+const AddIdea = ({ eventHandler }) => (
     <Col xs={ 12 }>
-        <IconBtn onClick={ () => clickIcon('clickAddIcon') } icon={ <AddIcon /> } />
+        <IconBtn onMouseDown={ () => eventHandler('clickAddIcon') } icon={ <AddIcon /> } />
     </Col>
 );
 
-const IdeaAndDoneNote = ({ _id, type, clickIcon }) => (
+const IdeaAndDoneNote = ({ _id, type, eventHandler }) => (
     <Fragment>
         <Col xs={ 4 }>
             <IconBtn
-                onClick={ type === 'ideas' ? () => clickIcon('clickSaveIcon', _id) :
-                    () => clickIcon('clickSkipPreviousIcon', _id)
+                onMouseDown={ type === 'ideas' ? () => eventHandler('clickSaveIcon', _id) :
+                    () => eventHandler('clickSkipPreviousIcon', _id)
                 }
                 icon={ type === 'ideas' ? <SaveIcon /> : <SkipPreviousIcon /> }
             />
         </Col>
         <Col xs={ 4 }>
             <IconBtn
-                onClick={ type === 'ideas' ? () => clickIcon('clickDeleteIcon', _id) :
-                    () => clickIcon('clickSaveIcon', _id)
+                onMouseDown={ type === 'ideas' ? () => eventHandler('clickDeleteIcon', _id) :
+                    () => eventHandler('clickSaveIcon', _id)
                 }
                 icon={ type === 'ideas' ? <DeleteIcon /> : <SaveIcon /> }
             />
         </Col>
         <Col xs={ 4 }>
             <IconBtn
-                onClick={ type === 'ideas' ? () => clickIcon('clickSkipNextIcon', _id) :
-                    () => clickIcon('clickDeleteIcon', _id)
+                onMouseDown={ type === 'ideas' ? () => eventHandler('clickSkipNextIcon', _id) :
+                    () => eventHandler('clickDeleteIcon', _id)
                 }
                 icon={ type === 'ideas' ? <SkipNextIcon /> : <DeleteIcon /> }
             />
@@ -49,42 +49,42 @@ const IdeaAndDoneNote = ({ _id, type, clickIcon }) => (
     </Fragment>
 );
 
-const ToDoAndInProgressNote = ({ _id, clickIcon }) => (
+const ToDoAndInProgressNote = ({ _id, eventHandler }) => (
     <Fragment>
         <Col xs={ 6 } sm={ 3 }>
             <IconBtn
-                onClick={ () => clickIcon('clickSkipPreviousIcon', _id) }
+                onMouseDown={ () => eventHandler('clickSkipPreviousIcon', _id) }
                 icon={ <SkipPreviousIcon /> }
             />
         </Col>
         <Col xs={ 6 } sm={ 3 }>
             <IconBtn
-                onClick={ () => clickIcon('clickSaveIcon', _id) }
+                onMouseDown={ () => eventHandler('clickSaveIcon', _id) }
                 icon={ <SaveIcon /> }
             />
         </Col>
         <Col xs={ 6 } sm={ 3 }>
             <IconBtn
-                onClick={ () => clickIcon('clickDeleteIcon', _id) }
+                onMouseDown={ () => eventHandler('clickDeleteIcon', _id) }
                 icon={ <DeleteIcon /> }
             />
         </Col>
         <Col xs={ 6 } sm={ 3 }>
             <IconBtn
-                onClick={ () => clickIcon('clickSkipNextIcon', _id) }
+                onMouseDown={ () => eventHandler('clickSkipNextIcon', _id) }
                 icon={ <SkipNextIcon /> }
             />
         </Col>
     </Fragment>
 );
 
-const Buttons = ({ _id, type, clickIcon }) => (
+const Buttons = ({ _id, type, eventHandler }) => (
     type === 'ideas' || type === 'done' ?
-        <IdeaAndDoneNote _id={ _id } type={ type } clickIcon={ clickIcon } /> :
-        <ToDoAndInProgressNote _id={ _id } clickIcon={ clickIcon } />
+        <IdeaAndDoneNote _id={ _id } type={ type } eventHandler={ eventHandler } /> :
+        <ToDoAndInProgressNote _id={ _id } eventHandler={ eventHandler } />
 );
 
-const Note = ({ _id, type, text, clickIcon, onBlurTextField }) => (
+const Note = ({ _id, type, text, eventHandler }) => (
     <Card>
         <CardContent>
             <TextField
@@ -93,7 +93,7 @@ const Note = ({ _id, type, text, clickIcon, onBlurTextField }) => (
                 rowsMax="4"
                 variant="outlined"
                 defaultValue={ text }
-                onBlur={ _id ? () => onBlurTextField(_id) : null }
+                onBlur={ _id ? () => eventHandler('onBlurTextField', _id) : null }
             />
         </CardContent>
         <CardActions>
@@ -101,8 +101,8 @@ const Note = ({ _id, type, text, clickIcon, onBlurTextField }) => (
                 <Row>
                     {
                         _id ?
-                            <Buttons _id={ _id } type={ type } clickIcon={ clickIcon } /> :
-                            <AddIdea clickIcon={ clickIcon } />
+                            <Buttons _id={ _id } type={ type } eventHandler={ eventHandler } /> :
+                            <AddIdea eventHandler={ eventHandler } />
                     }
                 </Row>
             </Grid>
@@ -111,37 +111,36 @@ const Note = ({ _id, type, text, clickIcon, onBlurTextField }) => (
 );
 
 IconBtn.propTypes = {
-    onClick: PropTypes.func.isRequired,
+    onMouseDown: PropTypes.func.isRequired,
     icon: PropTypes.element.isRequired
 }
 
 AddIdea.propTypes = {
-    clickIcon: PropTypes.func.isRequired
+    eventHandler: PropTypes.func.isRequired
 }
 
 IdeaAndDoneNote.propTypes = {
     _id: PropTypes.number.isRequired,
     type: PropTypes.string.isRequired,
-    clickIcon: PropTypes.func.isRequired
+    eventHandler: PropTypes.func.isRequired
 }
 
 ToDoAndInProgressNote.propTypes = {
     _id: PropTypes.number.isRequired,
-    clickIcon: PropTypes.func.isRequired
+    eventHandler: PropTypes.func.isRequired
 }
 
 Buttons.propTypes = {
     _id: PropTypes.number.isRequired,
     type: PropTypes.string.isRequired,
-    clickIcon: PropTypes.func.isRequired
+    eventHandler: PropTypes.func.isRequired
 }
 
 Note.propTypes = {
     _id: PropTypes.number,
     type: PropTypes.string,
     text: PropTypes.string,
-    clickIcon: PropTypes.func.isRequired,
-    onBlurTextField: PropTypes.func
+    eventHandler: PropTypes.func.isRequired
 }
 
 Note.displayName = "Note";
